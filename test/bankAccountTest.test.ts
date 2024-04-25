@@ -6,4 +6,10 @@ describe('BankAccount', () => {
       account.deposit(100);
       expect(account.balance).toBe(100);
   });
+
+  it('should be able to withdraw money', () => {
+      let account = new Account();
+      account.withdraw(100);
+      expect(account.balance).toBe(-100);
+    });
 });

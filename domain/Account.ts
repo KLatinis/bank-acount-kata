@@ -6,4 +6,7 @@ export class Account {
         this.balance += amount;
     }
 
+    withdraw(amount: number){
+        this.balance -= amount;
+    }
 }
