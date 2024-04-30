@@ -3,10 +3,10 @@ export enum TransactionType {
 }
 
 export class Transaction {
-    private readonly type: TransactionType;
-    private readonly amount: number;
-    private readonly date: Date;
-    private readonly balance: number;
+    readonly type: TransactionType;
+    readonly amount: number;
+    readonly date: Date;
+    readonly balance: number;
 
     constructor(type: TransactionType, amount: number, date: Date, balance: number) {
         this.type = type;
