@@ -113,7 +113,7 @@ describe('BankAccount', () => {
 
         expect(transactions).toHaveLength(2);
 
-        expect(transactions[0].amountToString()).toBe('100');
+        expect(transactions[0].amountToString()).toBe('+100');
         expect(transactions[0].dateToString()).toBe('25.4.2024');
         expect(transactions[0].type).toBe(TransactionType.DEPOSIT);
 
