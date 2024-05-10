@@ -31,19 +31,22 @@ export class Account {
     }
 
     deposits(){
-        return this.transactions.filter(transaction => transaction.type === TransactionType.DEPOSIT);
+        return this.getTransactions(TransactionType.DEPOSIT);
     }
 
     withdrawals(){
-        return this.transactions.filter(transaction => transaction.type === TransactionType.WITHDRAWAL);
+        return this.getTransactions(TransactionType.WITHDRAWAL);
     }
 
     getTransactionsByDateRange(startDate: Date, endDate: Date){
-        return this.transactions.filter(transaction => transaction.date >= startDate && transaction.date <= endDate);
+        return this.getTransactions(undefined, startDate, endDate);
     }
 
-    getTransactions(type: TransactionType, startDate: Date, endDate: Date){
-        return this.transactions.filter(transaction => transaction.type === type && transaction.date >= startDate && transaction.date <= endDate);
+    getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date){
+        let result = this.transactions.filter(transaction => type === undefined || transaction.type === type);
+        if (startDate) result = result.filter(transaction => transaction.date >= startDate);
+        if (endDate) result = result.filter(transaction => transaction.date <= endDate);
+        return result;
     }
 
     private getSortingExpression(sortOrder: string) {
