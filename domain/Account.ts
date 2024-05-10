@@ -42,6 +42,10 @@ export class Account {
         return this.transactions.filter(transaction => transaction.date >= startDate && transaction.date <= endDate);
     }
 
+    getTransactions(type: TransactionType, startDate: Date, endDate: Date){
+        return this.transactions.filter(transaction => transaction.type === type && transaction.date >= startDate && transaction.date <= endDate);
+    }
+
     private getSortingExpression(sortOrder: string) {
         return (x: Transaction, y: Transaction) => {
             if (x.date < y.date) return sortOrder === 'asc' ? -1 : 1;
