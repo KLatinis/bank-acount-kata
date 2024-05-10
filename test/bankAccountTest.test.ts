@@ -98,4 +98,27 @@ describe('BankAccount', () => {
         expect(withdrawals[1].dateToString()).toBe('24.4.2024');
         expect(withdrawals[1].type).toBe(TransactionType.WITHDRAWAL);
     })
+
+    it('should find transactions in a date range', () => {
+        const account = new Account();
+
+        account.deposit(100, new Date(2024, 3, 25));
+        account.withdraw(50, new Date(2024, 3, 26));
+        account.withdraw(25, new Date(2024, 3, 24));
+
+        const dateRangeStart = new Date(2024, 3, 24);
+        const dateRangeEnd = new Date(2024, 3, 25);
+
+        const transactions: any[] = account.getTransactionsByDateRange(dateRangeStart, dateRangeEnd);
+
+        expect(transactions).toHaveLength(2);
+
+        expect(transactions[0].amountToString()).toBe('100');
+        expect(transactions[0].dateToString()).toBe('25.4.2024');
+        expect(transactions[0].type).toBe(TransactionType.DEPOSIT);
+
+        expect(transactions[1].amountToString()).toBe('-25');
+        expect(transactions[1].dateToString()).toBe('24.4.2024');
+        expect(transactions[1].type).toBe(TransactionType.WITHDRAWAL);
+    })
 });
