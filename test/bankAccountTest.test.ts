@@ -143,5 +143,8 @@ describe('BankAccount', () => {
 
         transactions = account.getTransactions(TransactionType.DEPOSIT, new Date(2024, 3, 23), new Date(2024, 3, 24));
         expect(transactions).toHaveLength(0);
+
+        transactions = account.getTransactions(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 24));
+        expect(transactions).toHaveLength(1);
     });
 });
