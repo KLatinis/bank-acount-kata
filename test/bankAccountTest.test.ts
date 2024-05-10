@@ -132,12 +132,16 @@ describe('BankAccount', () => {
         const dateRangeStart = new Date(2024, 3, 24);
         const dateRangeEnd = new Date(2024, 3, 25);
 
-        const transactions: any[] = account.getTransactions(TransactionType.DEPOSIT, dateRangeStart, dateRangeEnd);
+        let transactions: any[] = account.getTransactions(TransactionType.DEPOSIT, dateRangeStart, dateRangeEnd);
 
         expect(transactions).toHaveLength(1);
 
         expect(transactions[0].amountToString()).toBe('+100');
         expect(transactions[0].dateToString()).toBe('25.4.2024');
         expect(transactions[0].type).toBe(TransactionType.DEPOSIT);
+
+
+        transactions = account.getTransactions(TransactionType.DEPOSIT, new Date(2024, 3, 23), new Date(2024, 3, 24));
+        expect(transactions).toHaveLength(0);
     });
 });
