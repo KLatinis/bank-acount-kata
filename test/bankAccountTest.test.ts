@@ -61,4 +61,20 @@ describe('BankAccount', () => {
         expect(transactions[0].dateToString()).toBe('26.4.2024');
         expect(transactions[0].balanceToString()).toBe('25');
     });
+
+    it('should find deposits', () => {
+        const account = new Account();
+
+        account.deposit(100, new Date(2024, 3, 25));
+        account.withdraw(50, new Date(2024, 3, 26));
+        account.withdraw(25, new Date(2024, 3, 24));
+
+        const deposits: any[] = account.deposits();
+
+        expect(deposits).toHaveLength(1);
+
+        expect(deposits[0].amountToString()).toBe('+100');
+        expect(deposits[0].dateToString()).toBe('25.4.2024');
+        expect(deposits[0].balanceToString()).toBe('75');
+    })
 });
