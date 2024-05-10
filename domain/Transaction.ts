@@ -4,15 +4,14 @@ export enum TransactionType {
 
 export class Transaction {
     private readonly type: TransactionType;
-    private readonly amount: number;
-    private readonly date: Date;
-    private readonly balance: number;
+    readonly amount: number;
+    readonly date: Date;
+    private balance: number = 0;
 
-    constructor(type: TransactionType, amount: number, date: Date, balance: number) {
+    constructor(type: TransactionType, amount: number, date: Date) {
         this.type = type;
-        this.amount = amount;
-        this.date = date;
-        this.balance = balance;
+        this.amount = type == TransactionType.DEPOSIT ? amount : (-1*amount);
+        this.date = date
     }
 
     amountToString() {
@@ -20,12 +19,16 @@ export class Transaction {
             case TransactionType.DEPOSIT:
                 return '+' + this.amount;
             case TransactionType.WITHDRAWAL:
-                return '-' + this.amount
+                return '' + this.amount
         }
     }
 
     dateToString() {
         return this.date.getDate() + '.' + (this.date.getMonth() + 1) + '.' + this.date.getFullYear();
+    }
+
+    setBalance(balance: number) {
+        this.balance = balance;
     }
 
     balanceToString() {
