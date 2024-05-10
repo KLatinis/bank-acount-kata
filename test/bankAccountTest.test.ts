@@ -86,12 +86,16 @@ describe('BankAccount', () => {
         account.withdraw(50, new Date(2024, 3, 26));
         account.withdraw(25, new Date(2024, 3, 24));
 
-        const deposits: any[] = account.withdrawals();
+        const withdrawals: any[] = account.withdrawals();
 
-        expect(deposits).toHaveLength(1);
+        expect(withdrawals).toHaveLength(2);
 
-        expect(deposits[0].amountToString()).toBe('+100');
-        expect(deposits[0].dateToString()).toBe('25.4.2024');
-        expect(deposits[0].type).toBe(TransactionType.DEPOSIT);
+        expect(withdrawals[0].amountToString()).toBe('-50');
+        expect(withdrawals[0].dateToString()).toBe('26.4.2024');
+        expect(withdrawals[0].type).toBe(TransactionType.WITHDRAWAL);
+
+        expect(withdrawals[1].amountToString()).toBe('-25');
+        expect(withdrawals[1].dateToString()).toBe('24.4.2024');
+        expect(withdrawals[1].type).toBe(TransactionType.WITHDRAWAL);
     })
 });

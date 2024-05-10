@@ -34,6 +34,10 @@ export class Account {
         return this.transactions.filter(transaction => transaction.type === TransactionType.DEPOSIT);
     }
 
+    withdrawals(){
+        return this.transactions.filter(transaction => transaction.type === TransactionType.WITHDRAWAL);
+    }
+
     private getSortingExpression(sortOrder: string) {
         return (x: Transaction, y: Transaction) => {
             if (x.date < y.date) return sortOrder === 'asc' ? -1 : 1;
