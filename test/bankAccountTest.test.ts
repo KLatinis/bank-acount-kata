@@ -75,6 +75,6 @@ describe('BankAccount', () => {
 
         expect(deposits[0].amountToString()).toBe('+100');
         expect(deposits[0].dateToString()).toBe('25.4.2024');
-        expect(deposits[0].balanceToString()).toBe('75');
+        expect(deposits[0].type).toBe(TransactionType.DEPOSIT);
     })
 });

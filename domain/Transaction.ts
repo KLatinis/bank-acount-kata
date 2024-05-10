@@ -3,7 +3,7 @@ export enum TransactionType {
 }
 
 export class Transaction {
-    private readonly type: TransactionType;
+    readonly type: TransactionType;
     readonly amount: number;
     readonly date: Date;
     private balance: number = 0;

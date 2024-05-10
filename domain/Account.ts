@@ -30,6 +30,10 @@ export class Account {
         return orderedTransactions.sort(this.getSortingExpression(sortOrder));
     }
 
+    deposits(){
+        return this.transactions.filter(transaction => transaction.type === TransactionType.DEPOSIT);
+    }
+
     private getSortingExpression(sortOrder: string) {
         return (x: Transaction, y: Transaction) => {
             if (x.date < y.date) return sortOrder === 'asc' ? -1 : 1;
