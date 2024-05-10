@@ -1,4 +1,5 @@
 import {Account} from "../domain/Account";
+import {TransactionType} from "../domain/Transaction";
 
 describe('BankAccount', () => {
     it('should be able to deposit money', () => {
@@ -14,27 +15,26 @@ describe('BankAccount', () => {
     });
 
     it('should display account statement sorted by date desc', () => {
-      const account = new Account();
+        const account = new Account();
 
-      account.deposit(100, new Date(2024, 3, 25));
-      account.withdraw(50, new Date(2024, 3, 26));
-      account.withdraw(25, new Date(2024, 3, 24));
+        account.deposit(100, new Date(2024, 3, 25));
+        account.withdraw(50, new Date(2024, 3, 26));
+        account.withdraw(25, new Date(2024, 3, 24));
 
-      const transactions: any[] = account.transactionsOrderedByDate();
+        const transactions: any[] = account.transactionsOrderedByDate();
 
-      expect(transactions).toHaveLength(3);
+        expect(transactions).toHaveLength(3);
+        expect(transactions[2].amountToString()).toBe('-25');
+        expect(transactions[2].dateToString()).toBe('24.4.2024');
+        expect(transactions[2].balanceToString()).toBe('-25');
 
-      expect(transactions[0].amountToString()).toBe('-25');
-      expect(transactions[0].dateToString()).toBe('24.4.2024');
-      expect(transactions[0].balanceToString()).toBe('-25');
+        expect(transactions[1].amountToString()).toBe('+100');
+        expect(transactions[1].dateToString()).toBe('25.4.2024');
+        expect(transactions[1].balanceToString()).toBe('75');
 
-      expect(transactions[1].amountToString()).toBe('+100');
-      expect(transactions[1].dateToString()).toBe('25.4.2024');
-      expect(transactions[1].balanceToString()).toBe('75');
-
-      expect(transactions[2].amountToString()).toBe('-50');
-      expect(transactions[2].dateToString()).toBe('26.4.2024');
-      expect(transactions[2].balanceToString()).toBe('25');
+        expect(transactions[0].amountToString()).toBe('-50');
+        expect(transactions[0].dateToString()).toBe('26.4.2024');
+        expect(transactions[0].balanceToString()).toBe('25');
     });
 
 
@@ -49,17 +49,17 @@ describe('BankAccount', () => {
 
         expect(transactions).toHaveLength(3);
 
-        expect(transactions[2].amountToString()).toBe('-25');
-        expect(transactions[2].dateToString()).toBe('24.4.2024');
-        expect(transactions[2].balanceToString()).toBe('-25');
+        expect(transactions[0].amountToString()).toBe('-25');
+        expect(transactions[0].dateToString()).toBe('24.4.2024');
+        expect(transactions[0].balanceToString()).toBe('-25');
 
         expect(transactions[1].amountToString()).toBe('+100');
         expect(transactions[1].dateToString()).toBe('25.4.2024');
         expect(transactions[1].balanceToString()).toBe('75');
 
-        expect(transactions[0].amountToString()).toBe('-50');
-        expect(transactions[0].dateToString()).toBe('26.4.2024');
-        expect(transactions[0].balanceToString()).toBe('25');
+        expect(transactions[2].amountToString()).toBe('-50');
+        expect(transactions[2].dateToString()).toBe('26.4.2024');
+        expect(transactions[2].balanceToString()).toBe('25');
     });
 
     it('should find deposits', () => {
