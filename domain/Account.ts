@@ -49,12 +49,13 @@ export class Account {
     }
 
     private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, sortOrder: string = 'desc'){
+        this.updateTransactionsBalance();
+
         let result = this.transactions.filter(transaction => type === undefined || transaction.type === type);
         if (startDate) result = result.filter(transaction => transaction.date >= startDate);
         if (endDate) result = result.filter(transaction => transaction.date <= endDate);
 
-        this.updateTransactionsBalance();
-        return this.transactions.sort(this.getSortingExpression(sortOrder));
+        return result.sort(this.getSortingExpression(sortOrder));
     }
 
     private getSortingExpression(sortOrder: string) {
