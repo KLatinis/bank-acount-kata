@@ -38,7 +38,6 @@ describe('BankAccount', () => {
         expect(transactions[0].balanceToString()).toBe('25');
     });
 
-
     it('should display account statement sorted by date asc', () => {
         const transactions: any[] = account.getAllTransactions('asc');
 
@@ -66,7 +65,6 @@ describe('BankAccount', () => {
         expect(deposits[0].dateToString()).toBe('25.4.2024');
         expect(deposits[0].type).toBe(TransactionType.DEPOSIT);
     })
-
 
     it('should find withdrawals', () => {
         const withdrawals: any[] = account.withdrawals();
@@ -123,8 +121,8 @@ describe('BankAccount', () => {
     });
 
     it('should find withdrawals ordered by date',()=>{
-        const dateRangeStart = new Date(2024, 3, 23);
-        const dateRangeEnd = new Date(2024, 3, 26);
+        let dateRangeStart = new Date(2024, 3, 23);
+        let dateRangeEnd = new Date(2024, 3, 26);
 
         let transactions = account.getTransactionsByTypeAndDateRange(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'asc');
         expect(transactions).toHaveLength(2);
@@ -135,5 +133,18 @@ describe('BankAccount', () => {
         expect(transactions).toHaveLength(2);
         expect(transactions[0].amountToString()).toBe('-50');
         expect(transactions[1].amountToString()).toBe('-25');
+
+        dateRangeEnd = new Date(2024,3,25);
+        transactions = account.getTransactionsByTypeAndDateRange(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'desc');
+        expect(transactions).toHaveLength(1);
+        expect(transactions[0].amountToString()).toBe('-25');
+
+        transactions = account.withdrawals(TransactionType.WITHDRAWAL, 'asc');
+        expect(transactions).toHaveLength(2);
+        expect(transactions[0].amountToString()).toBe('-25');
+        expect(transactions[1].amountToString()).toBe('-50');
+
+        transactions = account.withdrawals(TransactionType.DEPOSIT, 'asc');
+        expect(transactions).toHaveLength(1);
     });
 });
