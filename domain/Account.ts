@@ -28,12 +28,12 @@ export class Account {
         });
     }
 
-    deposits(){
-        return this.getTransactions(TransactionType.DEPOSIT);
+    deposits(sortOrder: string = 'desc'){
+        return this.getTransactions(TransactionType.DEPOSIT, undefined, undefined, sortOrder);
     }
 
-    withdrawals(){
-        return this.getTransactions(TransactionType.WITHDRAWAL);
+    withdrawals(sortOrder: string = 'desc'){
+        return this.getTransactions(TransactionType.WITHDRAWAL, undefined, undefined, sortOrder);
     }
 
     getTransactionsByDateRange(startDate: Date, endDate: Date, sortOrder: string = 'desc'){

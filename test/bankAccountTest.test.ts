@@ -139,12 +139,12 @@ describe('BankAccount', () => {
         expect(transactions).toHaveLength(1);
         expect(transactions[0].amountToString()).toBe('-25');
 
-        transactions = account.withdrawals(TransactionType.WITHDRAWAL, 'asc');
+        transactions = account.withdrawals('asc');
         expect(transactions).toHaveLength(2);
         expect(transactions[0].amountToString()).toBe('-25');
         expect(transactions[1].amountToString()).toBe('-50');
 
-        transactions = account.withdrawals(TransactionType.DEPOSIT, 'asc');
+        transactions = account.deposits('asc');
         expect(transactions).toHaveLength(1);
     });
 });
