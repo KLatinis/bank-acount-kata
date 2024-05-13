@@ -18,7 +18,7 @@ export class Account {
         this.transactions.push(transaction);
     }
 
-    transactionsOrderedByDate(sortOrder: string = 'desc'){
+    private updateTransactionsBalance(){
         let balance = 0;
 
         const orderedTransactions = this.transactions.sort(this.getSortingExpression('asc'));
@@ -26,8 +26,6 @@ export class Account {
             balance += transaction.amount;
             transaction.setBalance(balance);
         });
-
-        return orderedTransactions.sort(this.getSortingExpression(sortOrder));
     }
 
     deposits(){
@@ -38,15 +36,25 @@ export class Account {
         return this.getTransactions(TransactionType.WITHDRAWAL);
     }
 
-    getTransactionsByDateRange(startDate: Date, endDate: Date){
-        return this.getTransactions(undefined, startDate, endDate);
+    getTransactionsByDateRange(startDate: Date, endDate: Date, sortOrder: string = 'desc'){
+        return this.getTransactions(undefined, startDate, endDate, sortOrder);
     }
 
-    getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date){
+    getTransactionsByTypeAndDateRane(type: TransactionType, startDate: Date, endDate:Date){
+        return this.getTransactions(type, startDate, endDate);
+    }
+
+    getAllTransactions(sortOrder:string = 'desc'){
+        return this.getTransactions(undefined, undefined, undefined, sortOrder);
+    }
+
+    private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, sortOrder: string = 'desc'){
         let result = this.transactions.filter(transaction => type === undefined || transaction.type === type);
         if (startDate) result = result.filter(transaction => transaction.date >= startDate);
         if (endDate) result = result.filter(transaction => transaction.date <= endDate);
-        return result;
+
+        this.updateTransactionsBalance();
+        return this.transactions.sort(this.getSortingExpression(sortOrder));
     }
 
     private getSortingExpression(sortOrder: string) {

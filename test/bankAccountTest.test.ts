@@ -21,7 +21,7 @@ describe('BankAccount', () => {
         account.withdraw(50, new Date(2024, 3, 26));
         account.withdraw(25, new Date(2024, 3, 24));
 
-        const transactions: any[] = account.transactionsOrderedByDate();
+        const transactions: any[] = account.getAllTransactions();
 
         expect(transactions).toHaveLength(3);
         expect(transactions[2].amountToString()).toBe('-25');
@@ -45,7 +45,7 @@ describe('BankAccount', () => {
         account.withdraw(50, new Date(2024, 3, 26));
         account.withdraw(25, new Date(2024, 3, 24));
 
-        const transactions: any[] = account.transactionsOrderedByDate('asc');
+        const transactions: any[] = account.getAllTransactions('asc');
 
         expect(transactions).toHaveLength(3);
 
@@ -132,7 +132,7 @@ describe('BankAccount', () => {
         const dateRangeStart = new Date(2024, 3, 24);
         const dateRangeEnd = new Date(2024, 3, 25);
 
-        let transactions: any[] = account.getTransactions(TransactionType.DEPOSIT, dateRangeStart, dateRangeEnd);
+        let transactions: any[] = account.getTransactionsByTypeAndDateRane(TransactionType.DEPOSIT, dateRangeStart, dateRangeEnd);
 
         expect(transactions).toHaveLength(1);
 
@@ -141,13 +141,13 @@ describe('BankAccount', () => {
         expect(transactions[0].type).toBe(TransactionType.DEPOSIT);
 
 
-        transactions = account.getTransactions(TransactionType.DEPOSIT, new Date(2024, 3, 23), new Date(2024, 3, 24));
+        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.DEPOSIT, new Date(2024, 3, 23), new Date(2024, 3, 24));
         expect(transactions).toHaveLength(0);
 
-        transactions = account.getTransactions(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 24));
+        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 24));
         expect(transactions).toHaveLength(1);
 
-        transactions = account.getTransactions(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 26));
+        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 26));
         expect(transactions).toHaveLength(2);
     });
 });
