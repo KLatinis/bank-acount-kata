@@ -40,8 +40,8 @@ export class Account {
         return this.getTransactions(undefined, startDate, endDate, sortOrder);
     }
 
-    getTransactionsByTypeAndDateRane(type: TransactionType, startDate: Date, endDate:Date){
-        return this.getTransactions(type, startDate, endDate);
+    getTransactionsByTypeAndDateRange(type: TransactionType, startDate: Date, endDate:Date, sortOrder: string = 'desc'){
+        return this.getTransactions(type, startDate, endDate, sortOrder);
     }
 
     getAllTransactions(sortOrder:string = 'desc'){

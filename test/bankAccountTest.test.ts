@@ -103,7 +103,7 @@ describe('BankAccount', () => {
         const dateRangeStart = new Date(2024, 3, 24);
         const dateRangeEnd = new Date(2024, 3, 25);
 
-        let transactions: any[] = account.getTransactionsByTypeAndDateRane(TransactionType.DEPOSIT, dateRangeStart, dateRangeEnd);
+        let transactions: any[] = account.getTransactionsByTypeAndDateRange(TransactionType.DEPOSIT, dateRangeStart, dateRangeEnd);
 
         expect(transactions).toHaveLength(1);
 
@@ -112,13 +112,13 @@ describe('BankAccount', () => {
         expect(transactions[0].type).toBe(TransactionType.DEPOSIT);
 
 
-        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.DEPOSIT, new Date(2024, 3, 23), new Date(2024, 3, 24));
+        transactions = account.getTransactionsByTypeAndDateRange(TransactionType.DEPOSIT, new Date(2024, 3, 23), new Date(2024, 3, 24));
         expect(transactions).toHaveLength(0);
 
-        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 24));
+        transactions = account.getTransactionsByTypeAndDateRange(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 24));
         expect(transactions).toHaveLength(1);
 
-        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 26));
+        transactions = account.getTransactionsByTypeAndDateRange(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 26));
         expect(transactions).toHaveLength(2);
     });
 
@@ -126,14 +126,14 @@ describe('BankAccount', () => {
         const dateRangeStart = new Date(2024, 3, 23);
         const dateRangeEnd = new Date(2024, 3, 26);
 
-        let transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'asc');
+        let transactions = account.getTransactionsByTypeAndDateRange(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'asc');
         expect(transactions).toHaveLength(2);
-        expect(transactions[0].amountToString()).toBe('+25');
-        expect(transactions[1].amountToString()).toBe('+50');
+        expect(transactions[0].amountToString()).toBe('-25');
+        expect(transactions[1].amountToString()).toBe('-50');
 
-        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'desc');
+        transactions = account.getTransactionsByTypeAndDateRange(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'desc');
         expect(transactions).toHaveLength(2);
-        expect(transactions[0].amountToString()).toBe('+50');
-        expect(transactions[1].amountToString()).toBe('+25');
+        expect(transactions[0].amountToString()).toBe('-50');
+        expect(transactions[1].amountToString()).toBe('-25');
     });
 });
