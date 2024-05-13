@@ -2,6 +2,12 @@ import {Account} from "../domain/Account";
 import {TransactionType} from "../domain/Transaction";
 
 describe('BankAccount', () => {
+    const account = new Account();
+
+    account.deposit(100, new Date(2024, 3, 25));
+    account.withdraw(50, new Date(2024, 3, 26));
+    account.withdraw(25, new Date(2024, 3, 24));
+
     it('should be able to deposit money', () => {
       let account = new Account();
       account.deposit(100, new Date());
@@ -15,11 +21,6 @@ describe('BankAccount', () => {
     });
 
     it('should display account statement sorted by date desc', () => {
-        const account = new Account();
-
-        account.deposit(100, new Date(2024, 3, 25));
-        account.withdraw(50, new Date(2024, 3, 26));
-        account.withdraw(25, new Date(2024, 3, 24));
 
         const transactions: any[] = account.getAllTransactions();
 
@@ -39,12 +40,6 @@ describe('BankAccount', () => {
 
 
     it('should display account statement sorted by date asc', () => {
-        const account = new Account();
-
-        account.deposit(100, new Date(2024, 3, 25));
-        account.withdraw(50, new Date(2024, 3, 26));
-        account.withdraw(25, new Date(2024, 3, 24));
-
         const transactions: any[] = account.getAllTransactions('asc');
 
         expect(transactions).toHaveLength(3);
@@ -63,12 +58,6 @@ describe('BankAccount', () => {
     });
 
     it('should find deposits', () => {
-        const account = new Account();
-
-        account.deposit(100, new Date(2024, 3, 25));
-        account.withdraw(50, new Date(2024, 3, 26));
-        account.withdraw(25, new Date(2024, 3, 24));
-
         const deposits: any[] = account.deposits();
 
         expect(deposits).toHaveLength(1);
@@ -80,12 +69,6 @@ describe('BankAccount', () => {
 
 
     it('should find withdrawals', () => {
-        const account = new Account();
-
-        account.deposit(100, new Date(2024, 3, 25));
-        account.withdraw(50, new Date(2024, 3, 26));
-        account.withdraw(25, new Date(2024, 3, 24));
-
         const withdrawals: any[] = account.withdrawals();
 
         expect(withdrawals).toHaveLength(2);
@@ -100,12 +83,6 @@ describe('BankAccount', () => {
     })
 
     it('should find transactions in a date range', () => {
-        const account = new Account();
-
-        account.deposit(100, new Date(2024, 3, 25));
-        account.withdraw(50, new Date(2024, 3, 26));
-        account.withdraw(25, new Date(2024, 3, 24));
-
         const dateRangeStart = new Date(2024, 3, 24);
         const dateRangeEnd = new Date(2024, 3, 25);
 
@@ -123,12 +100,6 @@ describe('BankAccount', () => {
     })
 
     it('should find deposits in a date range', () => {
-        const account = new Account();
-
-        account.deposit(100, new Date(2024, 3, 25));
-        account.withdraw(50, new Date(2024, 3, 26));
-        account.withdraw(25, new Date(2024, 3, 24));
-
         const dateRangeStart = new Date(2024, 3, 24);
         const dateRangeEnd = new Date(2024, 3, 25);
 
@@ -149,5 +120,20 @@ describe('BankAccount', () => {
 
         transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, new Date(2024, 3, 23), new Date(2024, 3, 26));
         expect(transactions).toHaveLength(2);
+    });
+
+    it('should find withdrawals ordered by date',()=>{
+        const dateRangeStart = new Date(2024, 3, 23);
+        const dateRangeEnd = new Date(2024, 3, 26);
+
+        let transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'asc');
+        expect(transactions).toHaveLength(2);
+        expect(transactions[0].amountToString()).toBe('+25');
+        expect(transactions[1].amountToString()).toBe('+50');
+
+        transactions = account.getTransactionsByTypeAndDateRane(TransactionType.WITHDRAWAL, dateRangeStart, dateRangeEnd, 'desc');
+        expect(transactions).toHaveLength(2);
+        expect(transactions[0].amountToString()).toBe('+50');
+        expect(transactions[1].amountToString()).toBe('+25');
     });
 });
