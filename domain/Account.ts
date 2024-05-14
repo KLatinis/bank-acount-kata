@@ -57,12 +57,12 @@ export class Account {
         return this.getPaginatedTransactions(1, dateSortOrder);
     }
 
-    getNextPage(){
-        return this.getPaginatedTransactions(this.transactionsPagination.pageNumber + 1);
+    getNextPage(dateSortOrder: string = 'desc'){
+        return this.getPaginatedTransactions(this.transactionsPagination.pageNumber + 1, dateSortOrder);
     }
 
-    getPreviousPage(){
-        return this.getPaginatedTransactions(Math.max(this.transactionsPagination.pageNumber - 1, 1));
+    getPreviousPage(dateSortOrder: string = 'desc'){
+        return this.getPaginatedTransactions(Math.max(this.transactionsPagination.pageNumber - 1, 1), dateSortOrder);
     }
 
     private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, dateSortOrder: string = 'desc'){
