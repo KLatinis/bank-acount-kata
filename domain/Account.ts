@@ -45,7 +45,7 @@ export class Account {
     }
 
     getAllTransactions(sortOrder:string = 'desc'){
-        return this.getTransactions(undefined, undefined, undefined, sortOrder);
+        return this.getTransactions(undefined, undefined, undefined, sortOrder).slice(undefined, 10);
     }
 
     private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, sortOrder: string = 'desc'){

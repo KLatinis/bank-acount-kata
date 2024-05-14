@@ -161,7 +161,7 @@ describe('BankAccount', () => {
 
         const transactions = account.getAllTransactions();
         expect(transactions).toHaveLength(10);
-        expect(transactions[0].dateToString()).toBe('30.3.2024');
-        expect(transactions[9].dateToString()).toBe('21.3.2024');
+        expect(transactions[0].dateToString()).toBe('30.4.2024');
+        expect(transactions[9].dateToString()).toBe('21.4.2024');
     });
 });
