@@ -164,4 +164,23 @@ describe('BankAccount', () => {
         expect(transactions[0].dateToString()).toBe('30.4.2024');
         expect(transactions[9].dateToString()).toBe('21.4.2024');
     });
+
+
+    it('should return next page', () => {
+        account.deposit(100, new Date(2024, 3, 27));
+        account.deposit(150, new Date(2024, 3, 28));
+        account.deposit(200, new Date(2024, 3, 30));
+        account.deposit(100, new Date(2024, 3, 21));
+        account.withdraw(50, new Date(2024, 3, 20));
+        account.withdraw(50, new Date(2024, 3, 19));
+        account.deposit(100, new Date(2024, 3, 22));
+        account.withdraw(50, new Date(2024, 3, 23));
+        account.withdraw(50, new Date(2024, 3, 24));
+
+        const transactions = account.getAllTransactions(account.transactionsPagination.currentPage + 1);
+        expect(transactions).toHaveLength(2);
+        expect(transactions[0].dateToString()).toBe('30.4.2024');
+        expect(transactions[1].dateToString()).toBe('28.4.2024');
+    });
+
 });
