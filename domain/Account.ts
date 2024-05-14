@@ -44,8 +44,13 @@ export class Account {
         return this.getTransactions(type, startDate, endDate, sortOrder);
     }
 
-    getAllTransactions(sortOrder:string = 'desc'){
-        return this.getTransactions(undefined, undefined, undefined, sortOrder).slice(undefined, 10);
+    getPaginatedTransactions(page: number, sortOrder:string = 'desc'){
+        this.transactionsPagination.pageNumber = page;
+
+        const firstElementToReturn = this.transactionsPagination.pageSize * (page - 1);
+        const lastElementToReturn = Math.min(firstElementToReturn + 10, this.transactions.length);
+
+        return this.getTransactions(undefined, undefined, undefined, sortOrder).slice(firstElementToReturn, lastElementToReturn);
     }
 
     private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, sortOrder: string = 'desc'){
@@ -64,5 +69,10 @@ export class Account {
             if (x.date > y.date) return sortOrder === 'asc' ? 1 : -1;
             return 0;
         };
+    }
+
+    transactionsPagination = {
+        pageSize: 10,
+        pageNumber: 1
     }
 }
