@@ -164,14 +164,14 @@ describe('BankAccount', () => {
         account.withdraw(50, new Date(2024, 3, 23));
         account.withdraw(50, new Date(2024, 3, 24));
 
-        const transactions = account.getPaginatedTransactions(1);
+        const transactions = account.getFirstPage();
         expect(transactions).toHaveLength(10);
         expect(transactions[0].dateToString()).toBe('30.4.2024');
         expect(transactions[9].dateToString()).toBe('21.4.2024');
     });
 
 
-    it('should return next page', () => {
+    it('should return next and previous page', () => {
         let account = new Account();
 
         account.deposit(100, new Date(2024, 3, 25));
@@ -187,12 +187,23 @@ describe('BankAccount', () => {
         account.withdraw(50, new Date(2024, 3, 23));
         account.withdraw(50, new Date(2024, 3, 24));
 
-        let transactions = account.getPaginatedTransactions(account.transactionsPagination.pageNumber + 1);
+        let transactions = account.getNextPage();
         expect(transactions).toHaveLength(2);
         expect(transactions[0].dateToString()).toBe('20.4.2024');
         expect(transactions[1].dateToString()).toBe('19.4.2024');
 
-        transactions = account.getPaginatedTransactions(account.transactionsPagination.pageNumber + 1);
+        transactions = account.getNextPage();
         expect(transactions).toHaveLength(0);
+
+        transactions = account.getPreviousPage();
+        expect(transactions).toHaveLength(2);
+        expect(transactions[0].dateToString()).toBe('20.4.2024');
+        expect(transactions[1].dateToString()).toBe('19.4.2024');
+
+        transactions = account.getPreviousPage();
+        expect(transactions).toHaveLength(10);
+
+        transactions = account.getPreviousPage();
+        expect(transactions).toHaveLength(10);
     });
 });
