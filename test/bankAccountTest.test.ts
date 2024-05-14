@@ -22,7 +22,7 @@ describe('BankAccount', () => {
 
     it('should display account statement sorted by date desc', () => {
 
-        const transactions: any[] = account.getPaginatedTransactions(1);
+        const transactions: any[] = account.getFirstPage();
 
         expect(transactions).toHaveLength(3);
         expect(transactions[2].amountToString()).toBe('-25');
@@ -39,7 +39,7 @@ describe('BankAccount', () => {
     });
 
     it('should display account statement sorted by date asc', () => {
-        const transactions: any[] = account.getPaginatedTransactions(1, 'asc');
+        const transactions: any[] = account.getFirstPage('asc');
 
         expect(transactions).toHaveLength(3);
 
@@ -171,7 +171,7 @@ describe('BankAccount', () => {
     });
 
 
-    it('should return next and previous page', () => {
+    it('should return next, previous and last page', () => {
         let account = new Account();
 
         account.deposit(100, new Date(2024, 3, 25));
@@ -205,5 +205,43 @@ describe('BankAccount', () => {
 
         transactions = account.getPreviousPage();
         expect(transactions).toHaveLength(10);
+    });
+
+    it('should return next, previous and last page ordered by date asc', () => {
+        let account = new Account();
+
+        account.deposit(100, new Date(2024, 3, 25));
+        account.withdraw(50, new Date(2024, 3, 26));
+        account.withdraw(25, new Date(2024, 3, 24));
+        account.deposit(100, new Date(2024, 3, 27));
+        account.deposit(150, new Date(2024, 3, 28));
+        account.deposit(200, new Date(2024, 3, 30));
+        account.deposit(100, new Date(2024, 3, 21));
+        account.withdraw(50, new Date(2024, 3, 20));
+        account.withdraw(50, new Date(2024, 3, 19));
+        account.deposit(100, new Date(2024, 3, 22));
+        account.withdraw(50, new Date(2024, 3, 23));
+        account.withdraw(50, new Date(2024, 3, 24));
+
+        let transactions = account.getNextPage('asc');
+        expect(transactions).toHaveLength(2);
+        expect(transactions[0].dateToString()).toBe('28.4.2024');
+        expect(transactions[1].dateToString()).toBe('30.4.2024');
+
+        transactions = account.getNextPage('asc');
+        expect(transactions).toHaveLength(0);
+
+        transactions = account.getPreviousPage('asc');
+        expect(transactions).toHaveLength(2);
+        expect(transactions[0].dateToString()).toBe('28.4.2024');
+        expect(transactions[1].dateToString()).toBe('30.4.2024');
+
+        transactions = account.getPreviousPage('asc');
+        expect(transactions).toHaveLength(10);
+        expect(transactions[0].dateToString()).toBe('19.4.2024');
+
+        transactions = account.getPreviousPage('asc');
+        expect(transactions).toHaveLength(10);
+        expect(transactions[0].dateToString()).toBe('19.4.2024');
     });
 });

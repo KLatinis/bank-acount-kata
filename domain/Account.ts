@@ -28,33 +28,33 @@ export class Account {
         });
     }
 
-    deposits(sortOrder: string = 'desc'){
-        return this.getTransactions(TransactionType.DEPOSIT, undefined, undefined, sortOrder);
+    deposits(dateSortOrder: string = 'desc'){
+        return this.getTransactions(TransactionType.DEPOSIT, undefined, undefined, dateSortOrder);
     }
 
-    withdrawals(sortOrder: string = 'desc'){
-        return this.getTransactions(TransactionType.WITHDRAWAL, undefined, undefined, sortOrder);
+    withdrawals(dateSortOrder: string = 'desc'){
+        return this.getTransactions(TransactionType.WITHDRAWAL, undefined, undefined, dateSortOrder);
     }
 
-    getTransactionsByDateRange(startDate: Date, endDate: Date, sortOrder: string = 'desc'){
-        return this.getTransactions(undefined, startDate, endDate, sortOrder);
+    getTransactionsByDateRange(startDate: Date, endDate: Date, dateSortOrder: string = 'desc'){
+        return this.getTransactions(undefined, startDate, endDate, dateSortOrder);
     }
 
-    getTransactionsByTypeAndDateRange(type: TransactionType, startDate: Date, endDate:Date, sortOrder: string = 'desc'){
-        return this.getTransactions(type, startDate, endDate, sortOrder);
+    getTransactionsByTypeAndDateRange(type: TransactionType, startDate: Date, endDate:Date, dateSortOrder: string = 'desc'){
+        return this.getTransactions(type, startDate, endDate, dateSortOrder);
     }
 
-    getPaginatedTransactions(page: number, sortOrder:string = 'desc'){
+    private getPaginatedTransactions(page: number, dateSortOrder: string = 'desc'){
         this.transactionsPagination.pageNumber = page;
 
         const firstElementToReturn = Math.min(this.transactionsPagination.pageSize * (page - 1), this.transactions.length);
         const lastElementToReturn = Math.min(firstElementToReturn + 10, this.transactions.length);
 
-        return this.getTransactions(undefined, undefined, undefined, sortOrder).slice(firstElementToReturn, lastElementToReturn);
+        return this.getTransactions(undefined, undefined, undefined, dateSortOrder).slice(firstElementToReturn, lastElementToReturn);
     }
 
-    getFirstPage(){
-        return this.getPaginatedTransactions(1);
+    getFirstPage(dateSortOrder: string = 'desc') {
+        return this.getPaginatedTransactions(1, dateSortOrder);
     }
 
     getNextPage(){
@@ -65,14 +65,14 @@ export class Account {
         return this.getPaginatedTransactions(Math.max(this.transactionsPagination.pageNumber - 1, 1));
     }
 
-    private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, sortOrder: string = 'desc'){
+    private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, dateSortOrder: string = 'desc'){
         this.updateTransactionsBalance();
 
         let result = this.transactions.filter(transaction => type === undefined || transaction.type === type);
         if (startDate) result = result.filter(transaction => transaction.date >= startDate);
         if (endDate) result = result.filter(transaction => transaction.date <= endDate);
 
-        return result.sort(this.getSortingExpression(sortOrder));
+        return result.sort(this.getSortingExpression(dateSortOrder));
     }
 
     private getSortingExpression(sortOrder: string) {
