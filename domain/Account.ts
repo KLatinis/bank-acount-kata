@@ -47,10 +47,22 @@ export class Account {
     getPaginatedTransactions(page: number, sortOrder:string = 'desc'){
         this.transactionsPagination.pageNumber = page;
 
-        const firstElementToReturn = this.transactionsPagination.pageSize * (page - 1);
+        const firstElementToReturn = Math.min(this.transactionsPagination.pageSize * (page - 1), this.transactions.length);
         const lastElementToReturn = Math.min(firstElementToReturn + 10, this.transactions.length);
 
         return this.getTransactions(undefined, undefined, undefined, sortOrder).slice(firstElementToReturn, lastElementToReturn);
+    }
+
+    getFirstPage(){
+        return this.getPaginatedTransactions(1);
+    }
+
+    getNextPage(){
+        return this.getPaginatedTransactions(this.transactionsPagination.pageNumber + 1);
+    }
+
+    getPreviousPage(){
+        return this.getPaginatedTransactions(Math.max(this.transactionsPagination.pageNumber - 1, 1));
     }
 
     private getTransactions(type?: TransactionType, startDate?: Date, endDate?: Date, sortOrder: string = 'desc'){
