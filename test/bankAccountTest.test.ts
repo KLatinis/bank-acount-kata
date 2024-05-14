@@ -147,4 +147,21 @@ describe('BankAccount', () => {
         transactions = account.deposits('asc');
         expect(transactions).toHaveLength(1);
     });
+
+    it('should return first page with 10 elements', () => {
+        account.deposit(100, new Date(2024, 3, 27));
+        account.deposit(150, new Date(2024, 3, 28));
+        account.deposit(200, new Date(2024, 3, 30));
+        account.deposit(100, new Date(2024, 3, 21));
+        account.withdraw(50, new Date(2024, 3, 20));
+        account.withdraw(50, new Date(2024, 3, 19));
+        account.deposit(100, new Date(2024, 3, 22));
+        account.withdraw(50, new Date(2024, 3, 23));
+        account.withdraw(50, new Date(2024, 3, 24));
+
+        const transactions = account.getAllTransactions();
+        expect(transactions).toHaveLength(10);
+        expect(transactions[0].dateToString()).toBe('30.3.2024');
+        expect(transactions[9].dateToString()).toBe('21.3.2024');
+    });
 });
